@@ -13,12 +13,16 @@ import java_cup.runtime.Symbol;
 %char
 
 
+ENTER = [ \n]
+COM = [']
 LETRA = [a-zA-Z]
 DIGITO = [0-9]
-ESPACIO = \t|\f
+ESPACIO = [\t]|[\f]
 ID = {LETRA}({LETRA}|{DIGITO}|_)*
 CONST_INT = {DIGITO}+
 CONST_STRING = {COM}({LETRA}|{DIGITO}|{ESPACIO})*{COM}
+COMENTARIO = [<][/]{CONS_STRING}[/][>]
+FLOAT = {DIGITO}\.[0-9]*
 
 COMA = ","
 
@@ -106,6 +110,8 @@ END = "END.PROGRAM"
 {BEGIN} {System.out.println("Token BEGIN encontrado, Lexema "+ yytext());}
 
 {END} {System.out.println("Token END encontrado, Lexema "+ yytext());}
+
+{FLOAT} {System.out.println("Token FLOAT encontrado, Lexema "+ yytext());}
 
 "&&" {System.out.println("Token AND (operador lógico) encontrado, Lexema "+ yytext());}
 

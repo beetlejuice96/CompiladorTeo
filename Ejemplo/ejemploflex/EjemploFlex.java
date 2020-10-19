@@ -9,7 +9,7 @@ public class EjemploFlex {
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		try {
-			FileReader f = new FileReader("/home/victoria/Documentos/prueba.txt");
+			FileReader f = new FileReader("/home/dilan/Documentos/prueba2.txt");
 			Lexico Lexer = new Lexico(f);
 			Lexer.next_token();
 			

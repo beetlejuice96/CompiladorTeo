@@ -10,7 +10,7 @@ import java_cup.runtime.Symbol;
 
 // See https://github.com/jflex-de/jflex/issues/222
 @SuppressWarnings("FallThrough")
-public class Lexico implements java_cup.runtime.Scanner {
+public class Lexicotest implements java_cup.runtime.Scanner {
 
   /** This character denotes the end of file. */
   public static final int YYEOF = -1;
@@ -65,12 +65,8 @@ public class Lexico implements java_cup.runtime.Scanner {
   private static final int [] ZZ_CMAP_BLOCKS = zzUnpackcmap_blocks();
 
   private static final String ZZ_CMAP_BLOCKS_PACKED_0 =
-    "\11\0\1\1\2\0\1\1\31\0\1\2\1\3\2\0"+
-    "\1\4\1\5\1\6\1\7\1\10\1\11\12\12\1\13"+
-    "\1\14\1\15\1\16\1\17\2\0\1\20\1\21\1\22"+
-    "\1\23\1\24\1\22\1\25\1\22\1\26\3\22\1\27"+
-    "\1\30\1\31\1\32\1\22\1\33\10\22\4\0\1\34"+
-    "\1\0\32\22\1\0\1\35\1\0\1\36\u0181\0";
+    "\60\0\12\1\1\2\2\0\1\3\3\0\32\4\4\0"+
+    "\1\5\1\0\32\4\u0185\0";
 
   private static int [] zzUnpackcmap_blocks() {
     int [] result = new int[512];
@@ -97,14 +93,10 @@ public class Lexico implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\1\0\3\1\1\2\1\3\1\4\1\5\1\6\1\7"+
-    "\1\1\1\10\1\11\1\1\1\12\3\13\1\1\1\14"+
-    "\1\15\1\0\1\16\1\17\1\7\1\20\1\21\1\22"+
-    "\1\23\1\24\2\13\1\25\3\13\1\0\1\13\14\0"+
-    "\1\26\1\0\1\27";
+    "\1\0\1\1\1\2\1\1\1\3\1\4";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[53];
+    int [] result = new int[6];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -129,16 +121,10 @@ public class Lexico implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\37\0\76\0\135\0\37\0\37\0\37\0\37"+
-    "\0\37\0\174\0\233\0\37\0\272\0\331\0\370\0\u0117"+
-    "\0\u0136\0\u0155\0\u0174\0\37\0\37\0\135\0\37\0\u0193"+
-    "\0\u01b2\0\37\0\37\0\37\0\37\0\37\0\u01d1\0\u01f0"+
-    "\0\37\0\u020f\0\u022e\0\u024d\0\u026c\0\u028b\0\u02aa\0\u02c9"+
-    "\0\u02e8\0\u0307\0\u0326\0\u0345\0\u0364\0\u0383\0\u03a2\0\u03c1"+
-    "\0\u03e0\0\u03ff\0\37\0\u041e\0\37";
+    "\0\0\0\6\0\14\0\22\0\30\0\6";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[53];
+    int [] result = new int[6];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -161,26 +147,11 @@ public class Lexico implements java_cup.runtime.Scanner {
   private static final int [] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\2\2\1\3\1\4\1\5\1\6\1\7\1\10\1\2"+
-    "\1\11\1\12\1\13\1\14\1\15\1\16\1\17\1\20"+
-    "\1\21\2\20\1\22\7\20\1\2\1\23\1\24\41\0"+
-    "\1\25\35\0\1\26\1\0\1\27\6\0\1\26\5\0"+
-    "\14\26\13\0\1\30\1\0\1\31\42\0\1\32\36\0"+
-    "\1\33\1\34\35\0\1\35\36\0\1\36\32\0\1\20"+
-    "\5\0\15\20\14\0\1\20\5\0\4\20\1\37\10\20"+
-    "\14\0\1\20\5\0\10\20\1\40\4\20\37\0\1\41"+
-    "\13\0\1\30\36\0\1\31\36\0\1\20\5\0\5\20"+
-    "\1\42\7\20\14\0\1\20\5\0\3\20\1\43\11\20"+
-    "\14\0\1\20\5\0\6\20\1\44\6\20\12\0\1\45"+
-    "\1\0\1\20\5\0\15\20\14\0\1\20\5\0\10\20"+
-    "\1\46\4\20\34\0\1\47\14\0\1\50\1\0\1\20"+
-    "\5\0\15\20\35\0\1\51\35\0\1\52\35\0\1\53"+
-    "\40\0\1\54\30\0\1\55\42\0\1\56\40\0\1\57"+
-    "\30\0\1\60\31\0\1\61\51\0\1\62\32\0\1\63"+
-    "\27\0\1\64\45\0\1\65\7\0";
+    "\1\2\1\3\1\4\1\2\1\5\1\2\7\0\1\3"+
+    "\7\0\1\6\3\0\1\5\2\0\2\5";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[1085];
+    int [] result = new int[30];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -223,12 +194,10 @@ public class Lexico implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\1\0\1\11\2\1\5\11\2\1\1\11\7\1\2\11"+
-    "\1\0\1\11\2\1\5\11\2\1\1\11\3\1\1\0"+
-    "\1\1\14\0\1\11\1\0\1\11";
+    "\1\0\1\11\3\1\1\11";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[53];
+    int [] result = new int[6];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -309,7 +278,7 @@ public class Lexico implements java_cup.runtime.Scanner {
    *
    * @param   in  the java.io.Reader to read input from.
    */
-  public Lexico(java.io.Reader in) {
+  public Lexicotest(java.io.Reader in) {
     this.zzReader = in;
   }
 
@@ -715,117 +684,22 @@ public class Lexico implements java_cup.runtime.Scanner {
             { throw new Error("Caracter no permitido: <" + yytext() + "> en la linea " + yyline);
             }
             // fall through
-          case 24: break;
+          case 5: break;
           case 2:
-            { System.out.println("Token MULTIPLICACION (operador aritmético) encontrado, Lexema "+ yytext());
-            }
-            // fall through
-          case 25: break;
-          case 3:
-            { System.out.println("Token SUMA (operador aritmético) encontrado, Lexema "+ yytext());
-            }
-            // fall through
-          case 26: break;
-          case 4:
-            { System.out.println("Token COMA encontrado, Lexema "+ yytext());
-            }
-            // fall through
-          case 27: break;
-          case 5:
-            { System.out.println("Token RESTA (operador aritmético) encontrado, Lexema "+ yytext());
-            }
-            // fall through
-          case 28: break;
-          case 6:
-            { System.out.println("Token DIVISION (operador aritmético) encontrado, Lexema "+ yytext());
-            }
-            // fall through
-          case 29: break;
-          case 7:
             { System.out.println("Token CONST_INT, encontrado Lexema "+ yytext());
             }
             // fall through
-          case 30: break;
-          case 8:
-            { System.out.println("Token FIN_DE_LINEA encontrado, Lexema "+ yytext());
-            }
-            // fall through
-          case 31: break;
-          case 9:
-            { System.out.println("Token MENOR_A (operador comparativo) encontrado, Lexema "+ yytext());
-            }
-            // fall through
-          case 32: break;
-          case 10:
-            { System.out.println("Token MAYOR_A (operador comparativo) encontrado, Lexema "+ yytext());
-            }
-            // fall through
-          case 33: break;
-          case 11:
+          case 6: break;
+          case 3:
             { System.out.println("Token ID encontrado, Lexema "+ yytext());
             }
             // fall through
-          case 34: break;
-          case 12:
-            { System.out.println("Token NOT (operador lógico) encontrado, Lexema "+ yytext());
+          case 7: break;
+          case 4:
+            { System.out.println("Token ASIGN encontrado, Lexema "+ yytext());
             }
             // fall through
-          case 35: break;
-          case 13:
-            { System.out.println("Token AND (operador lógico) encontrado, Lexema "+ yytext());
-            }
-            // fall through
-          case 36: break;
-          case 14:
-            { System.out.println("Token CONST_STRING encontrado, Lexema "+ yytext());
-            }
-            // fall through
-          case 37: break;
-          case 15:
-            { System.out.println("Token FLOAT encontrado, Lexema "+ yytext());
-            }
-            // fall through
-          case 38: break;
-          case 16:
-            { System.out.println("Token ASIGNACION encontrado, Lexema "+ yytext());
-            }
-            // fall through
-          case 39: break;
-          case 17:
-            { System.out.println("Token MENOR_IGUAL_A (operador comparativo) encontrado, Lexema "+ yytext());
-            }
-            // fall through
-          case 40: break;
-          case 18:
-            { System.out.println("Token DISTINTO_A (operador comparativo) encontrado, Lexema "+ yytext());
-            }
-            // fall through
-          case 41: break;
-          case 19:
-            { System.out.println("Token IGUAL_A (operador comparativo) encontrado, Lexema "+ yytext());
-            }
-            // fall through
-          case 42: break;
-          case 20:
-            { System.out.println("Token MAYOR_IGUAL_A (operador comparativo) encontrado, Lexema "+ yytext());
-            }
-            // fall through
-          case 43: break;
-          case 21:
-            { System.out.println("Token OR (operador lógico) encontrado, Lexema "+ yytext());
-            }
-            // fall through
-          case 44: break;
-          case 22:
-            { System.out.println("Token END encontrado, Lexema "+ yytext());
-            }
-            // fall through
-          case 45: break;
-          case 23:
-            { System.out.println("Token BEGIN encontrado, Lexema "+ yytext());
-            }
-            // fall through
-          case 46: break;
+          case 8: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }
