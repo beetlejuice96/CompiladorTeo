@@ -15,6 +15,7 @@ import java_cup.runtime.Symbol;
 /*NO SE MUESTRAN*/
 DIGITO = [0-9]
 LETRA_MI = [a-z]
+ESPECIALES =[\#]|[\$]|[\/]|[\?]|[\¿]|[\¡]|[\@]
 GUION = [\_][\-]
 COMILLA = [\"]
 ESPACIO = \t | \n | \f
@@ -29,7 +30,7 @@ INICIO = [B][E][G][I][N][.][P][R][O][G][R][A][M]
 FIN =	[E][N][D][.][P][R][O][G][R][A][M]
 /*---------------------------------------------------------------------------*/
 TIPOS_DATOS = [F][L][O][A][T]|[I][N][T]|[S][T][R][I][N][G]
-VAR = {LETRA_MI}({LETRA_MI}|{DIGITO}|_)*
+VAR = {LETRA_MI}({LETRA_MI}|{DIGITO}|{GUION}|{ESPECIALES})*
 CONST_INT = {DIGITO}+
 CONST_STRING = [\"]({LETRA_MI}|{DIGITO}|{ESPACIO}|{GUION})*[\"]
 FLOAT = {DIGITO}*[.]{DIGITO}+|{DIGITO}+[.]{DIGITO}*
@@ -90,7 +91,7 @@ OP_FALSE = [F][A][L][S][E]
 /*COMENTARIO*/
 COMENTARIO_APER = [\<][/]
 COMENTARIO_CIER = [/][\>]
-COMENTARIO = {COMENTARIO_APER}({WHILE_INICIO}|{WHILE_FIN}|{IF_INICIO}|{IF_FIN}|{ELSE_IF}|{FOR_INICIO}|{FOR_FIN}|{ESPACIO}|{VAR}|{CONST_INT}|{CONST_STRING}|{FLOAT}|{COMA}|{FIN_LINEA}|{ASIGNACION}|{OP_AR_DIV}|{OP_AR_MUL}|{OP_AR_POT}|{OP_AR_SUM}|{OP_CO_DIS}|{OP_CO_IGU}|{OP_CO_MAY}|{OP_CO_MAY_IGU}|{OP_CO_MEN}|{OP_CO_MEN_IGU}|{OP_FALSE}|{OP_LO_AND}|{OP_LO_NOT}|{OP_LO_OR}|{OP_TRUE}|{OP_AR_RTO}|{OP_AR_RES}|{DECLARE}|{ENDDECLARE}|{COMENTARIO_CIER}|{COMENTARIO_APER}|{PAREN_APER}|{PAREN_CIER}|{LLAVE_APER}|{LLAVE_CIER})*{COMENTARIO_CIER}
+COMENTARIO = {COMENTARIO_APER}({ESPECIALES}|{WHILE_INICIO}|{WHILE_FIN}|{IF_INICIO}|{IF_FIN}|{ELSE_IF}|{FOR_INICIO}|{FOR_FIN}|{ESPACIO}|{VAR}|{CONST_INT}|{CONST_STRING}|{FLOAT}|{COMA}|{FIN_LINEA}|{ASIGNACION}|{OP_AR_DIV}|{OP_AR_MUL}|{OP_AR_POT}|{OP_AR_SUM}|{OP_CO_DIS}|{OP_CO_IGU}|{OP_CO_MAY}|{OP_CO_MAY_IGU}|{OP_CO_MEN}|{OP_CO_MEN_IGU}|{OP_FALSE}|{OP_LO_AND}|{OP_LO_NOT}|{OP_LO_OR}|{OP_TRUE}|{OP_AR_RTO}|{OP_AR_RES}|{DECLARE}|{ENDDECLARE}|{COMENTARIO_CIER}|{COMENTARIO_APER}|{PAREN_APER}|{PAREN_CIER}|{LLAVE_APER}|{LLAVE_CIER})*{COMENTARIO_CIER}
 
 %%
 
@@ -143,6 +144,7 @@ COMENTARIO = {COMENTARIO_APER}({WHILE_INICIO}|{WHILE_FIN}|{IF_INICIO}|{IF_FIN}|{
 {COMILLA}	{/*System.out.println("Token COMILLA encontrado, Lexema "+ yytext());*/}
 {GUION} 	{/*System.out.println("Token GUION encontrado, Lexema "+ yytext());*/}
 {ESPACIO}	{/*System.out.println("Token ESPACIO encontrado, Lexema "+ yytext());*/}
+{ESPECIALES}	{/*System.out.println("Token ESPECIALES encontrado, Lexema "+ yytext());*/}
 {COMENTARIO}	{/*System.out.println("Token COMENTARIO encontrado, Lexema "+ yytext());*/}
 
 }
