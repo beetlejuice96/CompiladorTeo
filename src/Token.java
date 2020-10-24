@@ -1,4 +1,4 @@
-
+package src;
 public class Token {
     private String lexema;
     private String token;
