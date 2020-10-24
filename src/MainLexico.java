@@ -9,7 +9,7 @@ public class MainLexico {
 	public static void main(String[] args) throws IOException {
 	try {	// TODO Auto-generated method stub
 
-		FileReader f = new FileReader("C:/Users/Matias/Desktop/PRUEBA.txt");
+		FileReader f = new FileReader("/home/dilan/Documentos/prueba.txt");
 		Lexico Lexer = new Lexico(f);
 		List<Token> tokens;
 		
