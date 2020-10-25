@@ -9,7 +9,7 @@ public class MainLexico {
 	public static void main(String[] args) throws IOException {
 	try {	// TODO Auto-generated method stub
 
-		FileReader f = new FileReader("C:/Users/Lucas/Desktop/Unlu/Teoria de la Computacion/TP Integrador/prueba.txt");
+		FileReader f = new FileReader("/home/victoria/dfgdfgdfgdfgdf/prueba.txt");
 		Lexico Lexer = new Lexico(f);
 		List<Token> tokens;
 		

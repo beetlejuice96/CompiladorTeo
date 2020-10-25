@@ -1,3 +1,4 @@
+package src;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -22,7 +23,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.StringReader;
 import java.util.List;
 import java.awt.event.ActionEvent;
@@ -152,7 +155,7 @@ public class ventanaNueva extends JFrame {
 		btnIngresarArchivo.setBounds(12, 0, 185, 25);
 		frame.getContentPane().add(btnIngresarArchivo);
 		
-		JButton btnEscanearTexto = new JButton("Escanear texto");
+		JButton btnEscanearTexto = new JButton("Escanear Texto");
 		btnEscanearTexto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
@@ -167,9 +170,44 @@ public class ventanaNueva extends JFrame {
 				
 			}
 		});
+		
 		btnEscanearTexto.setBounds(85, 371, 140, 25);
 		frame.getContentPane().add(btnEscanearTexto);
 		
+		JButton btnExportar = new JButton("Exportar");
+		btnExportar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String texto_area_holaa = txtpnHola.getText();
+				JFrame parentFrame = new JFrame();
+				/*
+				 * Le solicitamos al usuario el directorio más nombre
+				 * del archivo donde se va a guardar la salida.
+				 * */
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setDialogTitle("Specify a file to save");   
+				 
+				int userSelection = fileChooser.showSaveDialog(parentFrame);
+				 
+				if (userSelection == JFileChooser.APPROVE_OPTION) {
+				    File fileToSave = fileChooser.getSelectedFile();
+				    System.out.println("El archivo se ha guardado en: " + fileToSave.getAbsolutePath());
+					FileWriter file;
+					try {
+						file = new FileWriter(fileToSave.getAbsolutePath());
+						file.write(texto_area_holaa);
+						
+						file.close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+				    
+				}
+			}
+		});
+		btnExportar.setBounds(420, 371, 140, 25);
+		frame.getContentPane().add(btnExportar);
 
 	}
 }
