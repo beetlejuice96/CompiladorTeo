@@ -13,12 +13,17 @@ import java_cup.runtime.Symbol;
 %char
 
 /*NO SE MUESTRAN*/
+BARRA = [\\]
 DIGITO = [0-9]
 LETRA_MI = [a-z]
-ESPECIALES =[\#]|[\$]|[\/]|[\?]|[\¿]|[\¡]|[\@]
+ESPECIALES =[\#]|[\$]|[\?]|[\¿]|[\¡]|[\@]
 GUION = [\_][\-]
 COMILLA = [\"]
+IGUAL = [\=]
 ESPACIO = \t | \n | \f
+
+/*FILTER*/
+FILTER = [F][I][L][T][E][R]
 
 /*DECLARACION DE VARIABLES*/
 DECLARE = [D][E][C][L][A][R][E]
@@ -26,18 +31,23 @@ ENDDECLARE = [E][N][D][D][E][C][L][A][R][E]
 DECLARACION = {DECLARE}([\[]({VAR}|({VAR}{COMA})*)*[\]]{ASIGNACION}[\[]({TIPOS_DATOS}|({TIPOS_DATOS}{COMA})*)*[\]])*{ENDDECLARE}
 
 /*DECLARACION DEL PROGRAMA*/
-INICIO = [B][E][G][I][N][.][P][R][O][G][R][A][M]
-FIN =	[E][N][D][.][P][R][O][G][R][A][M]
+BEGIN = [B][E][G][I][N]{PUNTO}[P][R][O][G][R][A][M]
+END =	[E][N][D]{PUNTO}[P][R][O][G][R][A][M]
 /*---------------------------------------------------------------------------*/
 TIPOS_DATOS = [F][L][O][A][T]|[I][N][T]|[S][T][R][I][N][G]
 VAR = {LETRA_MI}({LETRA_MI}|{DIGITO}|{GUION}|{ESPECIALES})*
 CONST_INT = {DIGITO}+
 CONST_STRING = [\"]({LETRA_MI}|{DIGITO}|{ESPACIO}|{GUION})*[\"]
-FLOAT = {DIGITO}*[.]{DIGITO}+|{DIGITO}+[.]{DIGITO}*
-COMA = [,]
+FLOAT = {DIGITO}*{PUNTO}{DIGITO}+|{DIGITO}+{PUNTO}{DIGITO}*
+COMA = [\,]
+PUNTO = [\.]
 FIN_LINEA = [;]
 ASIGNACION = [:][=]
 /*---------------------------------------------------------------------------*/
+/*MOSTRAR POR PANTALLA*/
+PRINT = [P][R][I][N][T]
+MOSTRAR = {PRINT}{COMILLA}{CONST_STRING}{COMILLA}
+
 
 /*DECLARACION DE WHILE*/
 WHILE_INICIO = [W][H][I][L][E]
@@ -90,62 +100,279 @@ OP_FALSE = [F][A][L][S][E]
 
 /*COMENTARIO*/
 COMENTARIO_APER = [\<][/]
-COMENTARIO_CIER = [/][\>]
-COMENTARIO = {COMENTARIO_APER}({ESPECIALES}|{WHILE_INICIO}|{WHILE_FIN}|{IF_INICIO}|{IF_FIN}|{ELSE_IF}|{FOR_INICIO}|{FOR_FIN}|{ESPACIO}|{VAR}|{CONST_INT}|{CONST_STRING}|{FLOAT}|{COMA}|{FIN_LINEA}|{ASIGNACION}|{OP_AR_DIV}|{OP_AR_MUL}|{OP_AR_POT}|{OP_AR_SUM}|{OP_CO_DIS}|{OP_CO_IGU}|{OP_CO_MAY}|{OP_CO_MAY_IGU}|{OP_CO_MEN}|{OP_CO_MEN_IGU}|{OP_FALSE}|{OP_LO_AND}|{OP_LO_NOT}|{OP_LO_OR}|{OP_TRUE}|{OP_AR_RTO}|{OP_AR_RES}|{DECLARE}|{ENDDECLARE}|{COMENTARIO_CIER}|{COMENTARIO_APER}|{PAREN_APER}|{PAREN_CIER}|{LLAVE_APER}|{LLAVE_CIER})*{COMENTARIO_CIER}
+COMENTARIO_CIER = [\/][\>]
+COMENTARIO = {COMENTARIO_APER}({PUNTO}|{PRINT}|{IGUAL}|{ESPECIALES}|{WHILE_INICIO}|{WHILE_FIN}|{IF_INICIO}|{IF_FIN}|{ELSE_IF}|{FOR_INICIO}|{FOR_FIN}|{ESPACIO}|{VAR}|{CONST_INT}|{CONST_STRING}|{FLOAT}|{COMA}|{FIN_LINEA}|{ASIGNACION}|{OP_AR_DIV}|{OP_AR_MUL}|{OP_AR_POT}|{OP_AR_SUM}|{OP_CO_DIS}|{OP_CO_IGU}|{OP_CO_MAY}|{OP_CO_MAY_IGU}|{OP_CO_MEN}|{OP_CO_MEN_IGU}|{OP_FALSE}|{OP_LO_AND}|{OP_LO_NOT}|{OP_LO_OR}|{OP_TRUE}|{OP_AR_RTO}|{OP_AR_RES}|{DECLARE}|{ENDDECLARE}|{COMENTARIO_CIER}|{COMENTARIO_APER}|{PAREN_APER}|{PAREN_CIER}|{LLAVE_APER}|{LLAVE_CIER}|{GUION})*{COMENTARIO_CIER}
+
+/*CONDICION*/
+CONDICION = (({PAREN_APER}({CONST_STRING}|{CONST_INT})({OP_CO_IGU}|{OP_CO_MAY}|{OP_CO_MEN}|{OP_CO_MEN_IGU}|{OP_CO_MAY_IGU}|{OP_CO_DIS})({CONST_STRING}|{CONST_INT}){PAREN_CIER})+({OP_LO_AND}|{OP_LO_OR}|{OP_LO_NOT})*({PAREN_APER}({CONST_STRING}|{CONST_INT})({OP_CO_IGU}|{OP_CO_MAY}|{OP_CO_MEN}|{OP_CO_MEN_IGU}|{OP_CO_MAY_IGU}|{OP_CO_DIS})({CONST_STRING}|{CONST_INT}){PAREN_CIER})*)+
+
 
 %%
 
+
 <YYINITIAL> {
-{COMENTARIO_APER} {System.out.println("Token COMENTARIO_APER encontrado, Lexema "+ yytext());} 
-{COMENTARIO_CIER} {System.out.println("Token COMENTARIO_CIER encontrado, Lexema "+ yytext());} 
-{PAREN_APER}	{System.out.println("Token PAREN_APER encontrado, Lexema "+ yytext());}
-{PAREN_CIER}	{System.out.println("Token PAREN_CIER encontrado, Lexema "+ yytext());}
-{LLAVE_APER}	{System.out.println("Token LLAVE_APER encontrado, Lexema "+ yytext());}
-{LLAVE_CIER}	{System.out.println("Token LLAVE_CIER encontrado, Lexema "+ yytext());}
-{CORCHETE_APER}	{System.out.println("Token CORCHETE_APER encontrado, Lexema "+ yytext());}
-{CORCHETE_CIER}	{System.out.println("Token CORCHETE_CIER encontrado, Lexema "+ yytext());}
-{TIPOS_DATOS}	{System.out.println("Token TIPOS_DATOS encontrado, Lexema "+ yytext());}  
-{VAR}		{System.out.println("Token VAR encontrado, Lexema "+ yytext());}
-{WHILE_INICIO}	{System.out.println("Token WHILE_INICIO encontrado, Lexema "+ yytext());}
-{WHILE_FIN}	{System.out.println("Token WHILE_FIN encontrado, Lexema "+ yytext());}
-{IF_INICIO}	{System.out.println("Token IF_INICIO encontrado, Lexema "+ yytext());}
-{IF_FIN}	{System.out.println("Token IF_FIN encontrado, Lexema "+ yytext());}
-{ELSE_IF}	{System.out.println("Token ELSE_IF encontrado, Lexema "+ yytext());}
-{FOR_INICIO}	{System.out.println("Token FOR_INICIO encontrado, Lexema "+ yytext());}
-{FOR_FIN}	{System.out.println("Token FOR_FIN encontrado, Lexema "+ yytext());}
-{CONST_INT}	{System.out.println("Token CONST_INT, encontrado Lexema "+ yytext());}
-{CONST_STRING}	{System.out.println("Token CONST_STRING, encontrado Lexema "+ yytext());}
-{FLOAT}		{System.out.println("Token FLOAT encontrado, Lexema "+ yytext());}
-{COMA}		{System.out.println("Token COMA encontrado, Lexema "+ yytext());}
-{FIN_LINEA}	{System.out.println("Token FIN_LINEA encontrado, Lexema "+ yytext());}
-{ASIGNACION}	{System.out.println("Token ASIGNACION encontrado, Lexema "+ yytext());}
-{OP_LO_AND}	{System.out.println("Token OP_LO_AND encontrado, Lexema "+ yytext());}
-{OP_LO_OR}	{System.out.println("Token OP_LO_OR encontrado, Lexema "+ yytext());}
-{OP_LO_NOT}	{System.out.println("Token OP_LO_NOT encontrado, Lexema "+ yytext());}
-{OP_AR_SUM}	{System.out.println("Token OP_AR_SUM encontrado, Lexema "+ yytext());}
-{OP_AR_RTO}	{System.out.println("Token OP_AR_RTO encontrado, Lexema "+ yytext());}
-{OP_AR_POT}	{System.out.println("Token OP_AR_POT encontrado, Lexema "+ yytext());}
-{OP_AR_RES}	{System.out.println("Token OP_AR_RES encontrado, Lexema "+ yytext());}
-{OP_AR_MUL}	{System.out.println("Token OP_AR_MUL encontrado, Lexema "+ yytext());}
-{OP_AR_DIV}	{System.out.println("Token OP_AR_DIV encontrado, Lexema "+ yytext());}
-{OP_CO_IGU}	{System.out.println("Token OP_CO_IGU encontrado, Lexema "+ yytext());}
-{OP_CO_MAY}	{System.out.println("Token OP_CO_MAY encontrado, Lexema "+ yytext());}
-{OP_CO_MEN}	{System.out.println("Token OP_CO_MEN encontrado, Lexema "+ yytext());}
-{OP_CO_MAY_IGU}	{System.out.println("Token OP_CO_MAY_IGU encontrado, Lexema "+ yytext());}
-{OP_CO_MEN_IGU}	{System.out.println("Token OP_CO_MEN_IGU encontrado, Lexema "+ yytext());}
-{OP_CO_DIS}	{System.out.println("Token OP_CO_DIS encontrado, Lexema "+ yytext());}
-{OP_TRUE}	{System.out.println("Token OP_TRUE encontrado, Lexema "+ yytext());}
-{OP_FALSE}	{System.out.println("Token OP_FALSE encontrado, Lexema "+ yytext());}
-{DECLARE} 	{System.out.println("Token DECLARE encontrado, Lexema "+ yytext());}
-{ENDDECLARE}	{System.out.println("Token ENDDECLARE encontrado, Lexema "+ yytext());}
-{DECLARACION}	{/*System.out.println("Token DECLARACIONencontrado, Lexema "+ yytext());*/}
-{INICIO}	{/*System.out.println("Token INICIO encontrado, Lexema "+ yytext());*/}
-{FIN}		{/*System.out.println("Token FIN encontrado, Lexema "+ yytext());*/}
-{COMILLA}	{/*System.out.println("Token COMILLA encontrado, Lexema "+ yytext());*/}
-{GUION} 	{/*System.out.println("Token GUION encontrado, Lexema "+ yytext());*/}
-{ESPACIO}	{/*System.out.println("Token ESPACIO encontrado, Lexema "+ yytext());*/}
-{ESPECIALES}	{/*System.out.println("Token ESPECIALES encontrado, Lexema "+ yytext());*/}
-{COMENTARIO}	{/*System.out.println("Token COMENTARIO encontrado, Lexema "+ yytext());*/}
+
+{COMENTARIO_APER} 	{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("COMENTARIO_APER");
+         		listaToken.add(t);}
+
+
+{COMENTARIO_CIER} 	{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("COMENTARIO_CIER");
+         		listaToken.add(t);}
+
+{PAREN_APER}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("PAREN_APER");
+         		listaToken.add(t);}
+
+{PAREN_CIER}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("PAREN_CIER");
+         		listaToken.add(t);}
+
+{LLAVE_APER}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("LLAVE_APER");
+         		listaToken.add(t);}
+
+{LLAVE_CIER}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("LLAVE_CIER");
+         		listaToken.add(t);}
+
+{CORCHETE_APER}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("CORCHETE_APER");
+         		listaToken.add(t);}
+
+{CORCHETE_CIER}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("CORCHETE_CIER");
+         		listaToken.add(t);}
+
+{TIPOS_DATOS}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("TIPOS_DATOS");
+         		listaToken.add(t);}
+
+{VAR}			{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("VAR");
+         		listaToken.add(t);}
+
+{WHILE_INICIO}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("WHILE_INICIO");
+         		listaToken.add(t);}
+
+{WHILE_FIN}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("WHILE_FIN");
+         		listaToken.add(t);}
+
+{IF_INICIO}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("IF_INICIO");
+         		listaToken.add(t);}
+
+{IF_FIN}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("IF_FIN");
+         		listaToken.add(t);}
+
+{ELSE_IF}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("ELSE_IF");
+         		listaToken.add(t);}
+
+{FOR_INICIO}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("FOR_INICIO");
+         		listaToken.add(t);}
+
+{FOR_FIN}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("FOR_FIN");
+         		listaToken.add(t);}
+
+{CONST_INT}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("CONST_INT");
+         		listaToken.add(t);}
+
+{CONST_STRING}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("CONST_STRING");
+			t.setValor(yytext());
+			t.setLongitud(yytext().length());         	
+			listaToken.add(t);}
+
+{FLOAT}			{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("FLOAT");
+         		listaToken.add(t);}
+
+{COMA}			{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("COMA");
+         		listaToken.add(t);}
+
+{PUNTO}			{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("PUNTO");
+         		listaToken.add(t);}
+
+{FIN_LINEA}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("FIN_LINEA");
+         		listaToken.add(t);}
+
+{ASIGNACION}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("ASIGNACION");
+         		listaToken.add(t);}
+
+{OP_LO_AND}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("OP_LO_AND");
+         		listaToken.add(t);}
+
+{OP_LO_OR}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("OP_LO_OR");
+         		listaToken.add(t);}
+
+{OP_LO_NOT}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("OP_LO_NOT");
+         		listaToken.add(t);}
+
+{OP_AR_SUM}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("OP_AR_SUM");
+         		listaToken.add(t);}
+
+{OP_AR_RTO}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("OP_AR_RTO");
+         		listaToken.add(t);}
+
+{OP_AR_POT}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("OP_AR_POT");
+         		listaToken.add(t);}
+
+{OP_AR_RES}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("OP_AR_RES");
+         		listaToken.add(t);}
+
+{OP_AR_MUL}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("OP_AR_MUL");
+         		listaToken.add(t);}
+
+{OP_AR_DIV}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("OP_AR_DIV");
+         		listaToken.add(t);}
+
+{OP_CO_IGU}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("OP_CO_IGU");
+         		listaToken.add(t);}
+
+{OP_CO_MAY}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("OP_CO_MAY");
+         		listaToken.add(t);}
+
+{OP_CO_MEN}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("OP_CO_MEN");
+         		listaToken.add(t);}
+
+{OP_CO_MAY_IGU}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("OP_CO_MAY_IGU");
+         		listaToken.add(t);}
+
+{OP_CO_MEN_IGU}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("OP_CO_MEN_IGU");
+         		listaToken.add(t);}
+
+{OP_CO_DIS}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("OP_CO_DIS");
+         		listaToken.add(t);}
+
+{OP_TRUE}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("OP_TRUE");
+         		listaToken.add(t);}
+
+{OP_FALSE}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("OP_FALSE");
+         		listaToken.add(t);}
+
+{DECLARE}	 	{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("DECLARE");
+         		listaToken.add(t);}
+
+{ENDDECLARE}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("ENDDECLARE");
+         		listaToken.add(t);}
+
+{DECLARACION}		{}
+
+{COMILLA}		{}
+
+{GUION}		 	{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("GUION");
+         		listaToken.add(t);}
+
+{ESPACIO}		{}
+
+{ESPECIALES}		{}
+
+//{COMENTARIO}	{/*System.out.println("Token COMENTARIO encontrado, Lexema "+ yytext());*/}
+
+{MOSTRAR}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("MOSTRAR");
+         		listaToken.add(t);}
+
+{CONDICION}		{}
+
+{IGUAL}			{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("IGUAL");
+         		listaToken.add(t);}
+
+{BARRA}			{}
+
+{FILTER}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("FILTER");
+         		listaToken.add(t);}
+
+{BEGIN}			{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("BEGIN PROGRAM");
+         		listaToken.add(t);}
+
+{END} 			{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("END PROGRAM");
+         		listaToken.add(t);}
 
 }
 
