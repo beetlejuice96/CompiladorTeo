@@ -16,12 +16,12 @@ import java_cup.runtime.Symbol;
 BARRA = [\\]
 DIGITO = [0-9]
 LETRA_MI = [a-z]
-ESPECIALES =[\#]|[\$]|[\?]|[\¿]|[\¡]|[\@]
-GUION = [\_][\-]
+ESPECIALES =[\#]|[\$]|[\?]|[\¿]|[\¡]|[\@]|[!]
+GUION = [\_]|[\-]
 COMILLA = [\"]
 IGUAL = [\=]
-ESPACIO=[ \t\f\n]
-
+ESPACIO=[ \t\f\r\n]
+LETRA_MA = [A-Z]
 /*FILTER*/
 FILTER = [F][I][L][T][E][R]
 
@@ -36,7 +36,7 @@ END =	[E][N][D]{PUNTO}[P][R][O][G][R][A][M]
 TIPOS_DATOS = [F][L][O][A][T]|[I][N][T]|[S][T][R][I][N][G]
 VAR = {LETRA_MI}({LETRA_MI}|{DIGITO}|{GUION}|{ESPECIALES})*
 CONST_INT = {DIGITO}+
-CONST_STRING = [\"]({LETRA_MI}|{DIGITO}|{ESPACIO}|{GUION})*[\"]
+CONST_STRING = [\"]({LETRA_MI}|{DIGITO}|{ESPACIO}|{GUION}|{PUNTO}|{LETRA_MA}|[\!])*[\"]
 FLOAT = {DIGITO}*{PUNTO}{DIGITO}+|{DIGITO}+{PUNTO}{DIGITO}*
 COMA = [\,]
 PUNTO = [\.]
@@ -211,11 +211,11 @@ COMENTARIO_CIER = [\/][\>]
 			}
 
 {CONST_STRING}		{Token t = new Token(); 
-			if (yytext().length() <= 30){
+			if (yytext().length() <= 32){
          		t.setLexema(yytext());
          		t.setToken("CONST_STRING");
 			t.setValor(yytext());
-			t.setLongitud(yytext().length());         	
+			t.setLongitud(yytext().length()-2);         	
 			listaToken.add(t);}}
 
 {FLOAT}			{Token t = new Token(); 
