@@ -28,7 +28,6 @@ FILTER = [F][I][L][T][E][R]
 /*DECLARACION DE VARIABLES*/
 DECLARE = [D][E][C][L][A][R][E]
 ENDDECLARE = [E][N][D][D][E][C][L][A][R][E] 
-DECLARACION = {DECLARE}([\[]({VAR}|({VAR}{COMA})*)*[\]]{ASIGNACION}[\[]({TIPOS_DATOS}|({TIPOS_DATOS}{COMA})*)*[\]])*{ENDDECLARE}
 
 /*DECLARACION DEL PROGRAMA*/
 BEGIN = [B][E][G][I][N]{PUNTO}[P][R][O][G][R][A][M]
@@ -46,23 +45,22 @@ ASIGNACION = [:][=]
 /*---------------------------------------------------------------------------*/
 /*MOSTRAR POR PANTALLA*/
 PRINT = [P][R][I][N][T]
-MOSTRAR = {PRINT}{COMILLA}{CONST_STRING}{COMILLA}
 
 
 /*DECLARACION DE WHILE*/
 WHILE_INICIO = [W][H][I][L][E]
 WHILE_FIN = [D][O]
 
+/*DECLARACION FOR*/
+FOR_INICIO = [F][O][R]
+FOR_FIN = [M][A][K][E]
+FOR_MEDIO = [T][O]
+
+
 /*DECLARACION IF*/
 IF_INICIO = [I][F]
 IF_FIN = [T][H][E][N]
 ELSE_IF = [E][L][S][E]
-
-
-/*DECLARACION FOR*/
-FOR_INICIO = [F][O][R]
-FOR_FIN = [T][O]
-
 
 
 /*LLAVES, PARENTECIS Y CORCHETES*/
@@ -101,10 +99,6 @@ OP_FALSE = [F][A][L][S][E]
 /*COMENTARIO*/
 COMENTARIO_APER = [\<][/]
 COMENTARIO_CIER = [\/][\>]
-COMENTARIO = {COMENTARIO_APER}({PUNTO}|{PRINT}|{IGUAL}|{ESPECIALES}|{WHILE_INICIO}|{WHILE_FIN}|{IF_INICIO}|{IF_FIN}|{ELSE_IF}|{FOR_INICIO}|{FOR_FIN}|{ESPACIO}|{VAR}|{CONST_INT}|{CONST_STRING}|{FLOAT}|{COMA}|{FIN_LINEA}|{ASIGNACION}|{OP_AR_DIV}|{OP_AR_MUL}|{OP_AR_POT}|{OP_AR_SUM}|{OP_CO_DIS}|{OP_CO_IGU}|{OP_CO_MAY}|{OP_CO_MAY_IGU}|{OP_CO_MEN}|{OP_CO_MEN_IGU}|{OP_FALSE}|{OP_LO_AND}|{OP_LO_NOT}|{OP_LO_OR}|{OP_TRUE}|{OP_AR_RTO}|{OP_AR_RES}|{DECLARE}|{ENDDECLARE}|{COMENTARIO_CIER}|{COMENTARIO_APER}|{PAREN_APER}|{PAREN_CIER}|{LLAVE_APER}|{LLAVE_CIER}|{GUION})*{COMENTARIO_CIER}
-
-/*CONDICION*/
-CONDICION = (({PAREN_APER}({CONST_STRING}|{CONST_INT})({OP_CO_IGU}|{OP_CO_MAY}|{OP_CO_MEN}|{OP_CO_MEN_IGU}|{OP_CO_MAY_IGU}|{OP_CO_DIS})({CONST_STRING}|{CONST_INT}){PAREN_CIER})+({OP_LO_AND}|{OP_LO_OR}|{OP_LO_NOT})*({PAREN_APER}({CONST_STRING}|{CONST_INT})({OP_CO_IGU}|{OP_CO_MAY}|{OP_CO_MEN}|{OP_CO_MEN_IGU}|{OP_CO_MAY_IGU}|{OP_CO_DIS})({CONST_STRING}|{CONST_INT}){PAREN_CIER})*)+
 
 
 %%
@@ -196,6 +190,11 @@ CONDICION = (({PAREN_APER}({CONST_STRING}|{CONST_INT})({OP_CO_IGU}|{OP_CO_MAY}|{
 {FOR_FIN}		{Token t = new Token(); 
          		t.setLexema(yytext());
          		t.setToken("FOR_FIN");
+         		listaToken.add(t);}
+
+{FOR_MEDIO}		{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("FOR_MEDIO");
          		listaToken.add(t);}
 
 {CONST_INT}		{Token t = new Token(); 
@@ -330,8 +329,6 @@ CONDICION = (({PAREN_APER}({CONST_STRING}|{CONST_INT})({OP_CO_IGU}|{OP_CO_MAY}|{
          		t.setToken("ENDDECLARE");
          		listaToken.add(t);}
 
-{DECLARACION}		{}
-
 {COMILLA}		{}
 
 {GUION}		 	{Token t = new Token(); 
@@ -343,14 +340,6 @@ CONDICION = (({PAREN_APER}({CONST_STRING}|{CONST_INT})({OP_CO_IGU}|{OP_CO_MAY}|{
 
 {ESPECIALES}		{}
 
-//{COMENTARIO}	{/*System.out.println("Token COMENTARIO encontrado, Lexema "+ yytext());*/}
-
-{MOSTRAR}		{Token t = new Token(); 
-         		t.setLexema(yytext());
-         		t.setToken("MOSTRAR");
-         		listaToken.add(t);}
-
-{CONDICION}		{}
 
 {IGUAL}			{Token t = new Token(); 
          		t.setLexema(yytext());
