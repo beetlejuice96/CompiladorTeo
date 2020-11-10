@@ -20,7 +20,7 @@ ESPECIALES =[\#]|[\$]|[\?]|[\¿]|[\¡]|[\@]
 GUION = [\_][\-]
 COMILLA = [\"]
 IGUAL = [\=]
-ESPACIO = \t | \n | \f
+ESPACIO=[ \t\f\n]
 
 /*FILTER*/
 FILTER = [F][I][L][T][E][R]
@@ -105,6 +105,11 @@ COMENTARIO_CIER = [\/][\>]
 
 
 <YYINITIAL> {
+
+{PRINT}			{Token t = new Token(); 
+         		t.setLexema(yytext());
+         		t.setToken("PRINT");
+         		listaToken.add(t);}		
 
 {COMENTARIO_APER} 	{Token t = new Token(); 
          		t.setLexema(yytext());
@@ -197,17 +202,21 @@ COMENTARIO_CIER = [\/][\>]
          		t.setToken("FOR_MEDIO");
          		listaToken.add(t);}
 
-{CONST_INT}		{Token t = new Token(); 
+{CONST_INT}		{Token t = new Token();
+			int numero = Integer.parseInt(yytext());
+			if ((numero >= -32767) && (numero <= 32767)) { 
          		t.setLexema(yytext());
          		t.setToken("CONST_INT");
          		listaToken.add(t);}
+			}
 
 {CONST_STRING}		{Token t = new Token(); 
+			if (yytext().length() <= 30){
          		t.setLexema(yytext());
          		t.setToken("CONST_STRING");
 			t.setValor(yytext());
 			t.setLongitud(yytext().length());         	
-			listaToken.add(t);}
+			listaToken.add(t);}}
 
 {FLOAT}			{Token t = new Token(); 
          		t.setLexema(yytext());
