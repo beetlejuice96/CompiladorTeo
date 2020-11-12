@@ -22,6 +22,7 @@ COMILLA = [\"]
 IGUAL = [\=]
 ESPACIO=[ \t\f\r\n]
 LETRA_MA = [A-Z]
+
 /*FILTER*/
 FILTER = [F][I][L][T][E][R]
 
@@ -99,6 +100,7 @@ OP_FALSE = [F][A][L][S][E]
 /*COMENTARIO*/
 COMENTARIO_APER = [\<][/]
 COMENTARIO_CIER = [\/][\>]
+COMENTARIO = {COMENTARIO_APER}[^*] ~{COMENTARIO_CIER}
 
 
 %%
@@ -111,17 +113,7 @@ COMENTARIO_CIER = [\/][\>]
          		t.setToken("PRINT");
          		listaToken.add(t);}		
 
-{COMENTARIO_APER} 	{Token t = new Token(); 
-         		t.setLexema(yytext());
-         		t.setToken("COMENTARIO_APER");
-         		listaToken.add(t);}
-
-
-{COMENTARIO_CIER} 	{Token t = new Token(); 
-         		t.setLexema(yytext());
-         		t.setToken("COMENTARIO_CIER");
-         		listaToken.add(t);}
-
+{COMENTARIO} 		{}
 {PAREN_APER}		{Token t = new Token(); 
          		t.setLexema(yytext());
          		t.setToken("PAREN_APER");
@@ -211,17 +203,22 @@ COMENTARIO_CIER = [\/][\>]
 			}
 
 {CONST_STRING}		{Token t = new Token(); 
-			if (yytext().length() <= 32){
+			if (yytext().length() <= 30){
          		t.setLexema(yytext());
          		t.setToken("CONST_STRING");
 			t.setValor(yytext());
-			t.setLongitud(yytext().length()-2);         	
+			t.setLongitud(yytext().length());         	
 			listaToken.add(t);}}
 
-{FLOAT}			{Token t = new Token(); 
+{FLOAT}			{int indexDecimal = yytext().indexOf(".");
+	                 String entero = yytext().substring(0, indexDecimal);
+	                 String decimal = yytext().substring(indexDecimal+1,yytext().length());
+        		  if ( (Integer.valueOf(entero) > -32768) && (Integer.valueOf(entero) < 32768)
+              	       && (Integer.valueOf(decimal) > -32768) && (Integer.valueOf(decimal) < 32768) ) {
+			Token t = new Token(); 
          		t.setLexema(yytext());
          		t.setToken("FLOAT");
-         		listaToken.add(t);}
+         		listaToken.add(t);}}
 
 {COMA}			{Token t = new Token(); 
          		t.setLexema(yytext());
