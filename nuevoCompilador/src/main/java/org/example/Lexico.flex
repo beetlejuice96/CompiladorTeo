@@ -11,6 +11,9 @@ import java_cup.runtime.Symbol;
 %line
 %column
 %char
+%class Token
+
+
 
 /*NO SE MUESTRAN*/
 BARRA = [\\]

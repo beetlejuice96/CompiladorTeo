@@ -44,6 +44,13 @@
       <artifactId>jflex</artifactId>
       <version>1.8.2</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/at.mukprojects/exclycore -->
+    <dependency>
+      <groupId>at.mukprojects</groupId>
+      <artifactId>exclycore</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+
 
   </dependencies>
 
