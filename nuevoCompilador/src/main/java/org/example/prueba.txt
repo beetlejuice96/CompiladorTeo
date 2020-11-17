@@ -1,44 +1,12 @@
-</ prueba.txt />
-
-</ recuerden modificar de este archivo todo componente lexico que definieron
-diferente en su lenguaje, como operador de asignacion, apertura y cierre de
-ciclos y condicionales, operadores logicos, nombres de tipos, etc. />
-
 DECLARE
-[suma, contador, d1] := [FLOAT, INT, FLOAT]
-[actual, contar, palabra] := [FLOAT, FLOAT, STRING]
-[var] := [INT]
+	[a1] := [INTEGER]
 ENDDECLARE
-
 
 BEGIN.PROGRAM
 
-PRINT  "Prueba.txt Analizador Lexico!"
 
-contador = 0
-suma = 7.5
-contar = 18.22
+a:=b+2
 
-WHILE (contador <= 92) {
-	contador = contador + 1
-	actual = (contador / 0.342) + (contador * (contar + 4.67))
-	suma = suma + actual
-	}
-PRINT  "La variable suma es de tipo float"
-
-
-IF ((actual > 2) and (actual <> 0)){
-	PRINT  "actual es mayor que 2 y distinto de cero"
-	palabra = "es mayor"
-}
-ELSE{
-	PRINT "no es mayor que 2"
-}
-
-</ FILTER grupo 4, eliminar si no es tu tema especial />
-
-d1 = 54 + FILTER ( _>7 && _<=84,[suma,contador,actual])
-d1 = FILTER ( _!=6.5,[suma,contador,actual,contar])
 
 
 END.PROGRAM
