@@ -8,7 +8,7 @@ import java.util.List;
 public class ejemplo {
 
 	public static void main(String[] args) throws FileNotFoundException , Exception{
-		FileReader f = new FileReader("C:/Users/Matias/Documents/Unlu Maty/Teoria de la Computacion I/TP Integrador/trabajo/PRUEBA.txt");
+		FileReader f = new FileReader("C:\\Users\\dilan\\Documents\\unlu\\teoria de la computacion\\CompiladorTeo\\nuevoCompilador\\src\\main\\java\\org\\example\\prueba.txt");
 		Lexico Lexer = new Lexico(f);
 		parser sintactico = new parser(Lexer);
 		sintactico.parse();
