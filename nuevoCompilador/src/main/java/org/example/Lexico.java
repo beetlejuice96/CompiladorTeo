@@ -1233,5 +1233,6 @@ public class Lexico implements java_cup.runtime.Scanner {
     }
   }
 
-
+  public void setListaToken(List<Token> lista) {this.listaToken = lista;} //Defino la lista que utilizaremos para los token
+  public List<Token> getListToken() {return listaToken;} //Nos devolvera la lista con todos los tokems
 }
