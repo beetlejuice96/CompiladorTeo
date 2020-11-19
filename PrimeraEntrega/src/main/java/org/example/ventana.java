@@ -93,6 +93,7 @@ public class ventana extends JFrame {
 					modelo.addRow(object);
 				}else {
 					Object[] object = new Object[]{tk.getLexema(), tk.getToken(), "", tk.getValor(),};
+					System.out.println("asdasdasdsad");
 					modelo.addRow(object);
 				}
 			}

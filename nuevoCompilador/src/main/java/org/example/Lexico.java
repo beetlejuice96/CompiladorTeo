@@ -9,6 +9,7 @@ import java.util.List;
 
 import java_cup.runtime.*;
 
+import javax.swing.*;
 
 
 // See https://github.com/jflex-de/jflex/issues/222
@@ -613,7 +614,7 @@ public class Lexico implements java_cup.runtime.Scanner {
    * @return the next token.
    * @exception java.io.IOException if any I/O-Error occurs.
    */
-  @Override  public java_cup.runtime.Symbol next_token() throws java.io.IOException {
+  @Override  public java_cup.runtime.Symbol next_token() throws Exception {
     int zzInput;
     int zzAction;
 
@@ -854,7 +855,11 @@ public class Lexico implements java_cup.runtime.Scanner {
          		t.setLexema(yytext());
          		t.setToken("CONST_INT");
          		listaToken.add(t);
-				 return new Symbol(sym.CONST_INT,yytext());}
+				 return new Symbol(sym.CONST_INT,yytext());
+			}else{
+              throw new Exception("No se puede continuar con el analiss (exceso de longitud en constante Integer)");
+            }
+
             }
             // fall through
           case 64: break;
@@ -982,7 +987,11 @@ public class Lexico implements java_cup.runtime.Scanner {
          		t.setToken("CONST_STRING");
 			t.setValor(yytext());
 			t.setLongitud(yytext().length());         	
-			listaToken.add(t);}
+			listaToken.add(t);
+			}else{
+              //JOptionPane.showMessageDialog(null,"","Longitud de string excedida",JOptionPane.PLAIN_MESSAGE);
+              throw new Exception("No se puede continuar con el analiss (exceso de longitud en constante string)");
+            }
 			return new Symbol(sym.CONST_STRING,yytext());
             }
             // fall through
@@ -1005,7 +1014,10 @@ public class Lexico implements java_cup.runtime.Scanner {
 			Token t = new Token(); 
          		t.setLexema(yytext());
          		t.setToken("CONST_FLOAT");
-         		listaToken.add(t);}
+         		listaToken.add(t);
+        		  }else{
+                    throw new Exception("No se puede continuar con el analiss (exceso de longitud en constante Float)");
+                  }
 				 return new Symbol(sym.CONST_FLOAT,yytext());
             }
             // fall through
@@ -1233,6 +1245,5 @@ public class Lexico implements java_cup.runtime.Scanner {
     }
   }
 
-  public void setListaToken(List<Token> lista) {this.listaToken = lista;} //Defino la lista que utilizaremos para los token
-  public List<Token> getListToken() {return listaToken;} //Nos devolvera la lista con todos los tokems
+public List<Token> getListToken(){ return this.listaToken;}
 }

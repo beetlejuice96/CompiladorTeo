@@ -1,0 +1,189 @@
+import java.util.ArrayList;
+import java.util.List;
+import java_cup.runtime.*;
+
+parser code
+{:
+   
+    public void syntax_error(Symbol s){
+        System.out.println("Error en la linea " + (s.right+1) + " columna " + s.left + ". "
+            + s + " no reconocido. valor " + s.value );
+    }
+
+:}
+
+
+
+action code
+{:
+:}
+
+
+/*Declaracion de Terminales */
+terminal PRINT,FILTER, PAREN_APER,PAREN_CIER,LLAVE_APER,LLAVE_CIER, COMA, CORCHETE_APER, CORCHETE_CIER,TIPOS_DATOS,VAR,WHILE_INICIO,WHILE_FIN,IF_INICIO,IF_FIN,ELSE_IF, FOR_INICIO,FOR_FIN,FOR_MEDIO,CONST_INT,CONST_STRING,CONST_FLOAT,FLOAT,STRING,INTEGER,PUNTO,FIN_LINEA,ASIGNACION,OP_LO_AND,OP_LO_OR,OP_LO_NOT,OP_CO_IGU,OP_AR_SUM,OP_AR_RTO,OP_AR_POT,OP_AR_RES,OP_AR_MUL,OP_AR_DIV, OP_CO_MAY, OP_CO_MEN,OP_CO_MEN_IGU,OP_CO_MAY_IGU,OP_CO_DIS,OP_TRUE,OP_FALSE,DECLARE,ENDDECLARE,IGUAL,GUION,BEGIN,END,COMILLA,COMENTARIO;
+
+/*Declaracion de No Terminales*/
+non terminal start_,funcion_filter,tipos_datos, condicion_filter,lista,ocomp,numero,condi,olog,declaraciones,a,d,asignacion_simple,condiciones,condicion_multiple,condicion_simple,condicion_mul,mostrar,condicion_multi,expresion,termino,factor,while,vacio,completo,contenido,con,for,for_con_algo,for_vacio,f,asignacion_for,if,if_solo,if_solo_vacio,if_solo_con_algo,if_con_else,if_con_else_vacio,if_con_else_con_algo,programa;
+
+
+start with start_;
+
+
+
+//DECLARACION PROGRAMA
+
+
+//DECLARACION FUNCION FILTER
+funcion_filter::= FILTER:filter_ PAREN_APER:par_a condicion_filter:con_ COMA:coma_ CORCHETE_APER:cor_a lista:lis_ CORCHETE_CIER:cor_c PAREN_CIER:par_c {:RESULT=""+filter_+""+par_a+""+con_+""+coma_+""+cor_a+""+lis_+""+cor_c+""+par_c ;Regla regla = new Regla(1,RESULT,"funcion_filter ::= FILTER PAREN_APER condicion_filter COMA CORCHETE_APER lista CORCHETE_CIER PAREN_CIER");listaReglas.add(regla);:};
+
+condicion_filter::=   condi:con_ {:RESULT=""+con_; Regla regla = new Regla(2,RESULT,"condicion_filter ::= condi ");listaReglas.add(regla);:}
+                   |  condi:condi_ olog:log_ condi:con_ {:RESULT= ""+condi_+""+log_+""+con_; Regla regla = new Regla(3,RESULT,"condicion_filter ::= condi olog condi ");listaReglas.add(regla);:};
+
+condi::=  GUION:gion_ ocomp:ocomp_ numero:nro_{:RESULT= ""+gion_+""+ocomp_+""+nro_;Regla regla = new Regla(4,RESULT,"condi ::= GUION ocomp numero ");listaReglas.add(regla);:}
+        | GUION:gion_ ocomp:ocomp_ VAR:id_{:RESULT= ""+gion_+""+ocomp_+""+id_;Regla regla = new Regla(5,RESULT,"condi ::= GUION ocomp VAR");listaReglas.add(regla);:};
+
+ocomp::=  OP_CO_IGU:ig {:RESULT=""+ig;Regla regla = new Regla(6,RESULT,"ocomp ::= OP_CO_IGU ");listaReglas.add(regla);:} 
+        | OP_CO_MAY:may {:RESULT=""+may;Regla regla = new Regla(7,RESULT,"ocomp ::= OP_CO_MAY");listaReglas.add(regla);:} 
+        | OP_CO_MEN:men {:RESULT=""+men;Regla regla = new Regla(8,RESULT,"ocomp ::= OP_CO_MEN");listaReglas.add(regla);:} 
+        | OP_CO_MEN_IGU:c {:RESULT=""+c;Regla regla = new Regla(9,RESULT,"ocomp ::= OP_CO_MEN_IGU");listaReglas.add(regla);:} 
+        | OP_CO_MAY_IGU:may_ig {:RESULT= ""+may_ig;Regla regla = new Regla(10,RESULT,"ocomp ::= OP_CO_MAY_IGU "); listaReglas.add(regla);:} 
+        | OP_CO_DIS:dis{:RESULT = ""+dis; Regla regla = new Regla(11,RESULT,"ocomp ::= OP_CO_DIS");listaReglas.add(regla);:};
+
+numero::=  CONST_INT:inte {:RESULT = ""+inte;Regla regla = new Regla(12,RESULT,"numero ::= CONST_INT"); listaReglas.add(regla);:} 
+         | FLOAT:real{:RESULT = ""+real;Regla regla = new Regla(13,RESULT,"numero ::= FLOAT ");listaReglas.add(regla);:};
+
+olog::=  OP_LO_AND:and {:RESULT= ""+and;Regla regla = new Regla(14,RESULT,"olog ::= OP_LO_AND");listaReglas.add(regla);:} 
+       | OP_LO_OR:or {:RESULT = ""+or;Regla regla = new Regla(15,RESULT,"olog ::= OP_LO_OR");listaReglas.add(regla);:};
+
+lista::=  VAR:id{:RESULT = id; Regla regla = new Regla(16,RESULT,"lista ::= VAR");:} 
+        | lista:lis COMA:com_ VAR:id {:RESULT = ""+lis+""+""+com_+""+id;Regla regla = new Regla(17,RESULT,"lista ::= lista COMA VAR"); listaReglas.add(regla);:};
+
+
+//definicion de las reglas para la declaracion de variables.
+
+
+declaraciones::= DECLARE:beg_ d:d_ ENDDECLARE:end_ {:RESULT= ""+beg_+""+d_+""+end_;Regla regla = new Regla(18,RESULT,"declaraciones ::= DECLARE d ENDDECLARE");listaReglas.add(regla);:};
+
+d::=  CORCHETE_APER:cor_a a:a_ CORCHETE_CIER:cor_c {:RESULT = ""+cor_a+""+a_+""+cor_c;Regla regla = new Regla(19,RESULT,"d ::= CORCHETE_APER a CORCHETE_CIER ");listaReglas.add(regla);:} 
+    | CORCHETE_APER:cor_a a:a_ CORCHETE_CIER:cor_c d:d_ {:RESULT = ""+cor_a+""+a_+""+cor_c+""+d_;Regla regla = new Regla(20,RESULT,"d ::= CORCHETE_APER a CORCHETE_CIER d ");listaReglas.add(regla);:};
+
+a::= VAR:id_ COMA:com1_ a:a_ COMA:com2_ tipos_datos:tip_  {:RESULT = ""+id_+""+com1_+""+a_+""+com2_+""+tip_;Regla regla = new Regla(21,RESULT,"a ::= VAR COMA a COMA tipos_datos");listaReglas.add(regla);  Token token = new Token();token.setLexema((String) id_);token.setToken("VAR");token.setTipo((String)tip_);listaTokens.add(token);:}
+    | VAR:id_ CORCHETE_CIER:cor_c ASIGNACION:asig_ CORCHETE_APER:cor_a tipos_datos:tip_{:RESULT = ""+id_+""+cor_c+""+asig_+""+cor_a+""+tip_;Regla regla = new Regla(22,RESULT,"a ::= VAR CORCHETE_CIER ASIGNACION CORCHETE_APER tipos_datos");listaReglas.add(regla); Token token = new Token();token.setLexema((String) id_);token.setToken("VAR");token.setTipo((String)tip_);token.setValor((String)asig_);listaTokens.add(token);:};
+
+
+//DEFINICION REGLA TIPO DE DATOS
+tipos_datos ::=   INTEGER:int_{:RESULT = ""+int_;Regla regla = new Regla(23,RESULT,"tipos_datos ::= INTEGER");listaReglas.add(regla);:} 
+                | FLOAT:flt{:RESULT = ""+flt;Regla regla = new Regla(24,RESULT,"tipos_datos ::= FLOAT"); listaReglas.add(regla);:} 
+                | STRING:str {:RESULT = ""+str;Regla regla = new Regla(25,RESULT,"tipos_datos ::= STRING");listaReglas.add(regla);:};
+
+//DEFINICION DE LAS REGLAS DE PRINT
+mostrar::= PRINT:p  CONST_STRING:cs  {:RESULT=""+p+""+cs;Regla regla = new Regla(26,RESULT,"mostrar ::= PRINT CONST_STRING");listaReglas.add(regla);:};
+
+
+
+
+
+
+
+
+
+
+
+//DEFINICION ASIGNACION SIMPLE
+asignacion_simple ::= VAR:id_ ASIGNACION:asig_ expresion:exp_ {:RESULT = ""+id_+""+asig_+""+exp_;Regla regla = new Regla(27,RESULT,"asignacion_simple ::= VAR ASIGNACION expresion");listaReglas.add(regla);:};
+
+expresion ::=  expresion:exp_ OP_AR_SUM:sum_ termino:t_{:RESULT= ""+exp_+""+sum_+""+t_;Regla regla = new Regla(28,RESULT,"expresion ::= expresion OP_AR_SUM termino ");listaReglas.add(regla);:} 
+             | expresion:exp_ OP_AR_RES:res_ termino:t_{:RESULT= ""+exp_+""+res_+""+t_;Regla regla = new Regla(29,RESULT,"expresion ::= expresion OP_AR_RES termino");listaReglas.add(regla);:} 
+             | termino:t_{:RESULT = ""+t_;Regla regla = new Regla(30,RESULT,"expresion ::= termino");listaReglas.add(regla);:};
+
+termino ::= termino:t_ OP_AR_MUL:mul_ factor:f_ {:RESULT = ""+t_+""+mul_+""+f_;Regla regla = new Regla(31,RESULT,"termino ::= termino OP_AR_MUL factor ");listaReglas.add(regla);:}
+           |termino:t_ OP_AR_DIV:div_ factor:f_ {:RESULT =""+ t_+""+div_+""+f_;Regla regla = new Regla(32,RESULT,"termino ::= termino OP_AR_DIV factor");listaReglas.add(regla);:}
+           | factor:f_{:RESULT= ""+f_;Regla regla = new Regla(33,RESULT,"termino ::= factor");listaReglas.add(regla);:};
+
+factor ::=  CONST_INT:int_ {:RESULT =""+int_;Regla regla = new Regla(34,RESULT,"factor ::= CONST_INT" );listaReglas.add(regla);:}
+          | CONST_FLOAT:flt_ {:RESULT =""+flt_;Regla regla = new Regla(35,RESULT,"factor ::= CONST_FLOAT ");listaReglas.add(regla);:}
+          | PAREN_APER:par_a expresion:exp_ PAREN_CIER:par_c {:RESULT =""+par_a+""+exp_+""+par_c;Regla regla = new Regla(36,RESULT,"factor ::= PAREN_APER expresion PAREN_CIER ");listaReglas.add(regla);:}
+          | funcion_filter:ff{:RESULT =""+ff;Regla regla = new Regla(37,RESULT,"factor ::= funcion_filter");listaReglas.add(regla);:}
+          | VAR:id_ {:RESULT = ""+id_;Regla regla = new Regla(38,RESULT,"factor ::= VAR ");listaReglas.add(regla);:};
+
+
+//CONDICIONES
+
+condiciones::=  condicion_multiple:cm{:RESULT=""+cm;Regla regla = new Regla(39,RESULT,"condiciones ::= condicion_multiple");listaReglas.add(regla);:}
+              | condicion_simple:cs{:RESULT = ""+cs;Regla regla = new Regla(40,RESULT,"condiciones ::= condicion_simple");listaReglas.add(regla);:};
+
+condicion_simple::= PAREN_APER:par_a expresion:exp_ PAREN_CIER:par_c ocomp:ocomp_ PAREN_APER:par2_a expresion:exp2_ PAREN_CIER:par2_c {:RESULT = ""+par_a+""+exp_+""+par_c+""+ocomp_+""+par2_a+""+exp2_+""+par2_c;Regla regla = new Regla(41,RESULT,"condicion_simple ::= PAREN_APER expresion PAREN_CIER ocomp PAREN_APER expresion PAREN_CIER");listaReglas.add(regla);:};
+
+condicion_multiple::= condicion_mul:re1_ olog:olog_ condicion_mul:re2_ {:RESULT=""+re1_+""+olog_+""+re2_;Regla regla = new Regla(42,RESULT,"condicion_multiple ::= condicion_mul olog condicion_mul");listaReglas.add(regla);:};
+condicion_mul::= PAREN_APER:par_a expresion:exp_  ocomp:ocomp_  expresion:exp2_ PAREN_CIER:par2_c {:RESULT = ""+par_a+""+exp_+""+ocomp_+""+exp2_+""+par2_c;Regla regla = new Regla(43,RESULT,"condicion_mul ::= PAREN_APER expresion ocomp expresion PAREN_CIER ");listaReglas.add(regla);:};
+
+
+//DECLARACION DE WHILE
+
+while::=   vacio:va_ {:RESULT = ""+va_;Regla regla = new Regla(44,RESULT,"while ::= vacio ");listaReglas.add(regla);:} 
+        |  completo:co_ {:RESULT =""+ co_;Regla regla = new Regla(45,RESULT,"while ::= completo");listaReglas.add(regla);:};
+
+vacio::= WHILE_INICIO:wi_ condiciones:con_ WHILE_FIN:wf_ LLAVE_APER:lla_a LLAVE_CIER:lla_c {:RESULT =""+ wi_+""+con_+""+wf_+""+lla_a+""+lla_c;Regla regla = new Regla(46,RESULT,"vacio ::= WHILE_INICIO condiciones WHILE_FIN LLAVE_APER LLAVE_CIER");listaReglas.add(regla);:};
+
+completo::= WHILE_INICIO:wi_ condiciones:con_ WHILE_FIN:wf_ LLAVE_APER:lla_a contenido:cont_ LLAVE_CIER:lla_c{:RESULT=""+wi_+""+con_+""+wf_+""+lla_a+""+cont_+""+lla_c;Regla regla = new Regla(47,RESULT,"completo ::= WHILE_INICIO condiciones WHILE_FIN LLAVE_APER contenido LLAVE_CIER");listaReglas.add(regla);:};
+
+contenido::=  contenido:cont_ asignacion_simple:as_ {:RESULT = ""+cont_+""+as_;Regla regla = new Regla(48,RESULT,"contenido ::= contenido asignacion_simple ");listaReglas.add(regla);:}
+            | contenido:cont_ COMENTARIO:cm_ {:RESULT =""+ cont_+""+cm_;Regla regla = new Regla(49,RESULT,"contenido ::= contenido COMENTARIO");listaReglas.add(regla);:}
+            | contenido:cont_ mostrar:mst_ {:RESULT = ""+cont_+""+mst_;Regla regla = new Regla(50,RESULT,"contenido ::= contenido mostrar");listaReglas.add(regla);:}
+            | contenido:cont_ while:w_ {:RESULT = ""+cont_+""+w_;Regla regla = new Regla(51,RESULT,"contenido ::= contenido while");listaReglas.add(regla);:} 
+            | contenido:cont_ if:i_  {:RESULT = ""+cont_+""+i_;Regla regla = new Regla(52,RESULT,"contenido ::= contenido if ");listaReglas.add(regla);:}
+            | contenido:cont_ for:f_ {:RESULT = ""+cont_+""+f_;Regla regla = new Regla(53,RESULT,"contenido ::= contenido for");listaReglas.add(regla);:}
+            | con:cont_ {:RESULT = ""+cont_;Regla regla = new Regla(54,RESULT,"contenido ::= con ");listaReglas.add(regla);:} ;
+
+con::= asignacion_simple:as_ {:RESULT = ""+as_;Regla regla = new Regla(55,RESULT,"con ::= asignacion_simple");listaReglas.add(regla);:}
+        | mostrar:mst_ {:RESULT = ""+mst_;Regla regla = new Regla(56,RESULT,"con ::= mostrar ");listaReglas.add(regla);:}
+        | while:w_ {:RESULT = ""+w_;Regla regla = new Regla(57,RESULT,"con ::= while");listaReglas.add(regla);:}
+        | if:i_  {:RESULT = ""+i_;Regla regla = new Regla(58,RESULT,"con ::= if");listaReglas.add(regla);:}
+        | for:f_ {:RESULT = ""+f_;Regla regla = new Regla(59,RESULT,"con ::= for ");listaReglas.add(regla);:}
+        | COMENTARIO:cm_ {:RESULT = ""+cm_;Regla regla = new Regla(60,RESULT,"con ::= COMENTARIO");listaReglas.add(regla);:};
+
+
+//DECLARACION DE FOR
+
+for ::=   for_vacio:fv_ {:RESULT=""+fv_;Regla regla = new Regla(61,RESULT,"for ::= for_vacio");listaReglas.add(regla);:}
+        | for_con_algo:fa_{:RESULT=""+fa_;Regla regla = new Regla(62,RESULT,"for ::= for_con_algo");listaReglas.add(regla);:};
+
+for_vacio::= f:f_ LLAVE_APER:lla_a LLAVE_CIER:lla_c{:RESULT=""+f_+""+lla_a+""+lla_c;Regla regla = new Regla(63,RESULT,"for_vacio ::= f LLAVE_APER LLAVE_CIER");listaReglas.add(regla);:};
+
+for_con_algo ::= f:f_ LLAVE_APER:lla_a contenido:cont_ LLAVE_CIER:lla_c{:RESULT=""+f_+""+lla_a+""+cont_+""+lla_c;Regla regla = new Regla(64,RESULT,"for_con_algo ::= f LLAVE_APER contenido LLAVE_CIER");listaReglas.add(regla);:};
+
+f::= FOR_INICIO:fi_ asignacion_for:af_ FOR_MEDIO:ft_ CONST_INT:cnst_ FOR_FIN:ff_ {:RESULT=""+fi_+""+af_+""+ft_+""+cnst_+""+ff_;Regla regla = new Regla(65,RESULT,"f ::= FOR_INICIO asignacion_for FOR_MEDIO CONST_INT FOR_FIN ");listaReglas.add(regla);:};
+
+asignacion_for  ::= VAR:id_ ASIGNACION:asig_ CONST_INT:cnst_{:RESULT=id_+""+asig_+""+""+cnst_;Regla regla = new Regla(66,RESULT,"asignacion_for ::= VAR ASIGNACION CONST_INT");listaReglas.add(regla);:};
+
+
+
+//DECLARACION IF
+
+if::=     if_solo:is_{:RESULT=""+is_ ;Regla regla = new Regla(67,RESULT,"if ::= if_solo");listaReglas.add(regla);:}
+        | if_con_else:ice_{:RESULT=""+ice_ ;Regla regla = new Regla(68,RESULT,"if ::= if_con_else");listaReglas.add(regla);:};
+
+if_solo::=    if_solo_vacio:isv_ {:RESULT= ""+isv_;Regla regla = new Regla(69,RESULT,"if_solo ::= if_solo_vacio");listaReglas.add(regla);:}
+            | if_solo_con_algo:isc_{:RESULT= ""+isc_;Regla regla = new Regla(70,RESULT,"if_solo ::= if_solo_con_algo");listaReglas.add(regla);:};
+
+if_solo_vacio::= IF_INICIO:ii_ condiciones:cond_ IF_FIN:if_ LLAVE_APER:lla_a LLAVE_CIER:lla_c{:RESULT=""+ii_+""+cond_+""+if_+""+lla_a+""+lla_c;Regla regla = new Regla(71,RESULT,"if_solo_vacio ::= IF_INICIO condiciones IF_FIN LLAVE_APER LLAVE_CIER");listaReglas.add(regla);:};
+
+if_solo_con_algo::= IF_INICIO:ii_ condiciones:cond_ IF_FIN:if_ LLAVE_APER:lla_a contenido:cont_ LLAVE_CIER:lla_c{:RESULT=""+ii_+""+cond_+""+if_+""+lla_a+""+cont_+""+lla_c;Regla regla = new Regla(72,RESULT,"if_solo_con_algo ::= IF_INICIO condiciones IF_FIN LLAVE_APER contenido LLAVE_CIER");listaReglas.add(regla);:};
+
+
+if_con_else::=    if_con_else_vacio:iev_{:RESULT=""+ iev_;Regla regla = new Regla(73,RESULT,"if_con_else ::= if_con_else_vacio ");listaReglas.add(regla);:}
+                | if_con_else_con_algo:iec_ {:RESULT=""+iec_ ;Regla regla = new Regla(74,RESULT,"if_con_else ::= if_con_else_con_algo");listaReglas.add(regla);:};
+
+
+if_con_else_vacio::=if_solo:is_ ELSE_IF:ei_ LLAVE_APER:lla_a LLAVE_CIER:lla_c{:RESULT= ""+ is_+""+ei_+""+lla_a+""+lla_c;Regla regla = new Regla(75,RESULT,"if_con_else_vacio ::= if_solo ELSE_IF LLAVE_APER LLAVE_CIER");listaReglas.add(regla);:} ;
+
+if_con_else_con_algo::=if_solo:is_ ELSE_IF:ei_ LLAVE_APER:lla_a contenido:cont_ LLAVE_CIER:lla_c{:RESULT= ""+is_+""+ei_+""+lla_a+""+cont_+""+lla_c;Regla regla = new Regla(76,RESULT,"if_con_else_con_algo ::= if_solo ELSE_IF LLAVE_APER contenido LLAVE_CIER ");listaReglas.add(regla);:} ;
+
+
+// COMIENZO DE LA GRAMATICA
+start_::=programa:pro_ {:RESULT=""+pro_;Regla regla = new Regla(77,RESULT,"start_ ::= programa");listaReglas.add(regla);:};
+programa::= BEGIN:b_ contenido:cont_ END:e_{:RESULT=""+ b_+""+cont_+""+e_;Regla regla = new Regla(78,RESULT,"programa ::= BEGIN contenido END ");listaReglas.add(regla);:}
+            |declaraciones:dec_ BEGIN:b_ contenido:cont_ END:e_{:RESULT=""+dec_+""+b_+""+cont_+""+e_;Regla regla = new Regla(79,RESULT,"programa ::= declaraciones BEGIN contenido END");listaReglas.add(regla);:};
+
+
+

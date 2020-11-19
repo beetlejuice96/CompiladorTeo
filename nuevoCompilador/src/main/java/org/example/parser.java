@@ -6,14 +6,68 @@ package org.example;
 //----------------------------------------------------
 
 import java.util.ArrayList;
+
 import java.util.List;
 import java_cup.runtime.*;
+import java_cup.runtime.XMLElement;
 
 /** CUP v0.11b 20160615 (GIT 4ac7450) generated parser.
   */
 @SuppressWarnings({"rawtypes"})
 public class parser extends java_cup.runtime.lr_parser {
 	private List<Regla> listaReglas = new ArrayList<>();
+	private List<Token> listaTokens = new ArrayList<>();
+	private List<Token> listaToken = new ArrayList<>();
+	
+	public List<Token> getListaTokens() {
+		List<String> arrayVar = new ArrayList<>();
+		List<String> arrayTipo = new ArrayList<>();
+		
+		String var = null;
+		String tipo = null;
+		String valor = null;
+		while (listaTokens.size()!=0) {
+			var = this.listaTokens.get(listaTokens.size()-1).getLexema();
+			valor= listaTokens.get(listaTokens.size()-1).getValor();
+			tipo = this.listaTokens.get(listaTokens.size()-1).getTipo();
+			arrayVar.add(var);
+			arrayTipo.add(tipo);
+			
+			if (valor == null) {
+			}
+			else
+			if ( valor.equals(":=") ) {
+				
+				
+				for (int i=0; i<arrayTipo.size();i++) {
+					Token token = new Token();
+					token.setToken("VAR");
+					token.setLexema(arrayVar.get(arrayVar.size() - (i+1) ));
+					token.setTipo(arrayTipo.get(i));
+					this.listaToken.add(token);
+				}
+				
+				
+				arrayVar = new ArrayList<>();
+				arrayTipo = new ArrayList<>();
+					
+			}
+			
+			listaTokens.remove(listaTokens.size()-1);
+			
+			
+			
+
+		}
+
+	
+		return this.listaToken;
+	}
+
+
+	public void setListaTokens(List<Token> listaTokens) {
+		this.listaTokens = listaTokens;
+	}
 
 	public List<Regla> getListaReglas() {
 		return listaReglas;
@@ -753,7 +807,7 @@ class CUP$parser$actions {
 		int tip_left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int tip_right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		Object tip_ = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		RESULT = ""+id_+""+com1_+""+a_+""+com2_+""+tip_;Regla regla = new Regla(21,RESULT,"a ::= VAR COMA a COMA tipos_datos");listaReglas.add(regla);
+		RESULT = ""+id_+""+com1_+""+a_+""+com2_+""+tip_;Regla regla = new Regla(21,RESULT,"a ::= VAR COMA a COMA tipos_datos");listaReglas.add(regla);  Token token = new Token();token.setLexema((String) id_);token.setToken("VAR");token.setTipo((String)tip_);listaTokens.add(token);System.out.println("entro a cargar lista");
               CUP$parser$result = parser.getSymbolFactory().newSymbol("a",10, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -777,7 +831,7 @@ class CUP$parser$actions {
 		int tip_left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int tip_right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		Object tip_ = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		RESULT = ""+id_+""+cor_c+""+asig_+""+cor_a+""+tip_;Regla regla = new Regla(22,RESULT,"a ::= VAR CORCHETE_CIER ASIGNACION CORCHETE_APER tipos_datos");listaReglas.add(regla);
+		RESULT = ""+id_+""+cor_c+""+asig_+""+cor_a+""+tip_;Regla regla = new Regla(22,RESULT,"a ::= VAR CORCHETE_CIER ASIGNACION CORCHETE_APER tipos_datos");listaReglas.add(regla); Token token = new Token();token.setLexema((String) id_);token.setToken("VAR");token.setTipo((String)tip_);token.setValor((String)asig_);listaTokens.add(token);
               CUP$parser$result = parser.getSymbolFactory().newSymbol("a",10, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
