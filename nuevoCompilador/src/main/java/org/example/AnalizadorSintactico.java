@@ -265,5 +265,19 @@ public class AnalizadorSintactico {
 		scrollPane_2.setBounds(20, 618, 942, 361);
 		frame.getContentPane().add(scrollPane_2);
 		
+		JButton btnNewButton_1 = new JButton("Exportar Tabla");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					exportExcel(table_1);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnNewButton_1.setBounds(20, 584, 121, 23);
+		frame.getContentPane().add(btnNewButton_1);
+		
 	}
 }
