@@ -64,8 +64,10 @@ lista::=  VAR:id{:RESULT = id; Regla regla = new Regla(16,RESULT,"lista ::= VAR"
 
 declaraciones::= DECLARE:beg_ d:d_ ENDDECLARE:end_ {:RESULT= ""+beg_+""+d_+""+end_;Regla regla = new Regla(18,RESULT,"declaraciones ::= DECLARE d ENDDECLARE");listaReglas.add(regla);:};
 
+
+//este fue modificado por correccion de recursivida de derecha, lo pasamos a izquierda.
 d::=  CORCHETE_APER:cor_a a:a_ CORCHETE_CIER:cor_c {:RESULT = ""+cor_a+""+a_+""+cor_c;Regla regla = new Regla(19,RESULT,"d ::= CORCHETE_APER a CORCHETE_CIER ");listaReglas.add(regla);:} 
-    | CORCHETE_APER:cor_a a:a_ CORCHETE_CIER:cor_c d:d_ {:RESULT = ""+cor_a+""+a_+""+cor_c+""+d_;Regla regla = new Regla(20,RESULT,"d ::= CORCHETE_APER a CORCHETE_CIER d ");listaReglas.add(regla);:};
+    | d:d_ CORCHETE_APER:cor_a a:a_ CORCHETE_CIER:cor_c {:RESULT = ""+cor_a+""+a_+""+cor_c+""+d_;Regla regla = new Regla(20,RESULT,"d ::= CORCHETE_APER a CORCHETE_CIER d ");listaReglas.add(regla);:};
 
 a::= VAR:id_ COMA:com1_ a:a_ COMA:com2_ tipos_datos:tip_  {:RESULT = ""+id_+""+com1_+""+a_+""+com2_+""+tip_;Regla regla = new Regla(21,RESULT,"a ::= VAR COMA a COMA tipos_datos");listaReglas.add(regla);  Token token = new Token();token.setLexema((String) id_);token.setToken("VAR");token.setTipo((String)tip_);listaTokens.add(token);:}
     | VAR:id_ CORCHETE_CIER:cor_c ASIGNACION:asig_ CORCHETE_APER:cor_a tipos_datos:tip_{:RESULT = ""+id_+""+cor_c+""+asig_+""+cor_a+""+tip_;Regla regla = new Regla(22,RESULT,"a ::= VAR CORCHETE_CIER ASIGNACION CORCHETE_APER tipos_datos");listaReglas.add(regla); Token token = new Token();token.setLexema((String) id_);token.setToken("VAR");token.setTipo((String)tip_);token.setValor((String)asig_);listaTokens.add(token);:};

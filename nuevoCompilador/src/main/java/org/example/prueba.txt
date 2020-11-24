@@ -9,7 +9,9 @@ b:=1
 a:=b+2
 s:=0
 WHILE (s)>(2) DO {
-	
+	</comentario
+	    </comentario/>
+	/>
 	IF (a)==(b) THEN{
 	PRINT "a y b son iguales"
 	} ELSE {
