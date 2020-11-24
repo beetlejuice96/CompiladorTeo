@@ -1,41 +1,44 @@
+</ prueba.txt />
+
+</ recuerden modificar de este archivo todo componente lexico que definieron
+diferente en su lenguaje, como operador de asignacion, apertura y cierre de
+ciclos y condicionales, operadores logicos, nombres de tipos, etc. />
+
 DECLARE
-[a,b,c]:=[INTEGER,FLOAT,INTEGER]
-[s]:=[FLOAT]
+[suma,contador,d1] := [FLOAT,INTEGER,FLOAT]
+[actual,contar,palabra] := [FLOAT,FLOAT,STRING]
+[var] := [INTEGER]
 ENDDECLARE
+
 
 BEGIN.PROGRAM
 
-b:=1
-a:=b+2
-s:=0
-WHILE (s)>(2) DO {
-	
-	IF (a)==(b) THEN{
-	PRINT "a y b son iguales"
-	} ELSE {
-		IF (a)>(b) THEN{
-			PRINT "a es mayor que b"
-			}ELSE {
-			 PRINT "b es mayor que a"	
-			
-			}
+PRINT  "Prueba Analizador Lexico!"
 
-		}
- s:= s+1
+contador:=0
+suma:=7.5
+contar:=18.22
+
+WHILE (contador)<=(92) DO{
+	contador:= contador + 1
+	actual:= (contador / 0.342) + (contador * (contar + 4.67))
+	suma:= suma + actual
+	}
+PRINT  "La variable suma es de"
+
+
+IF ((actual) > (2) )&& ((actual) != (0)) THEN{
+	PRINT  "actual es mayor que 2"
+	palabra:="es mayor"
+}
+ELSE{
+	PRINT "no es mayor que 2"
 }
 
-s:=0
-FOR i:=0 TO 10 MAKE {
-	
-PRINT "hola mundo"	
-s:=s+1
-}
+</ FILTER grupo 4, eliminar si no es tu tema especial />
 
-IF (s)==(10)THEN{
-PRINT "s es 10" 
-
-}
-
+d1 := 54 + FILTER ( _>7 && _<=84,[suma,contador,actual])
+d1 := FILTER ( _!=6.5,[suma,contador,actual,contar])
 
 
 END.PROGRAM
