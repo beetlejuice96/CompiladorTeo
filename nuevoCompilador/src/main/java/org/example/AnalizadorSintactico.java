@@ -140,6 +140,7 @@ public class AnalizadorSintactico {
 		String[] tokensPermitidos ={"CONST_INT","CONST_FLOAT","CONST_STRING","VAR"};
 		List<String> tokensCargados = new ArrayList<String>();
 		modelo.setRowCount(0);
+		System.out.println(tokens_id.size());
 		for (int i=0; i< tokens_lexico.size(); i++) {
 			Token tk = tokens_lexico.get(i);
 			String tkActual = tk.getLexema();
@@ -150,7 +151,7 @@ public class AnalizadorSintactico {
 					tokensCargados.add(tk.getLexema());
 					modelo.addRow(object);
 				}else if(tk.getToken()=="VAR") {
-				
+
 					for(int t=0; t<tokens_id.size();t++) {
 						System.out.println("token id: "+tokens_id.get(t).getLexema() + "  token_lexico: "+tk.getLexema());
 						if (tokens_id.get(t).getLexema().equals(tkActual)) {

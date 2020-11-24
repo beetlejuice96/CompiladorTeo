@@ -1,5 +1,5 @@
 DECLARE
-[a,b,c,i]:=[INTEGER,FLOAT,INTEGER,INTEGER]
+[a,b,c]:=[INTEGER,FLOAT,INTEGER]
 [s]:=[FLOAT]
 ENDDECLARE
 
@@ -9,9 +9,7 @@ b:=1
 a:=b+2
 s:=0
 WHILE (s)>(2) DO {
-	</comentario
-	    </comentario/>
-	/>
+	
 	IF (a)==(b) THEN{
 	PRINT "a y b son iguales"
 	} ELSE {

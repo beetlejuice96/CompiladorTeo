@@ -50,7 +50,7 @@ ocomp::=  OP_CO_IGU:ig {:RESULT=""+ig;Regla regla = new Regla(6,RESULT,"ocomp ::
         | OP_CO_DIS:dis{:RESULT = ""+dis; Regla regla = new Regla(11,RESULT,"ocomp ::= OP_CO_DIS");listaReglas.add(regla);:};
 
 numero::=  CONST_INT:inte {:RESULT = ""+inte;Regla regla = new Regla(12,RESULT,"numero ::= CONST_INT"); listaReglas.add(regla);:} 
-         | FLOAT:real{:RESULT = ""+real;Regla regla = new Regla(13,RESULT,"numero ::= FLOAT ");listaReglas.add(regla);:};
+         | CONST_FLOAT:real{:RESULT = ""+real;Regla regla = new Regla(13,RESULT,"numero ::= CONST_FLOAT ");listaReglas.add(regla);:};
 
 olog::=  OP_LO_AND:and {:RESULT= ""+and;Regla regla = new Regla(14,RESULT,"olog ::= OP_LO_AND");listaReglas.add(regla);:} 
        | OP_LO_OR:or {:RESULT = ""+or;Regla regla = new Regla(15,RESULT,"olog ::= OP_LO_OR");listaReglas.add(regla);:};
@@ -64,10 +64,8 @@ lista::=  VAR:id{:RESULT = id; Regla regla = new Regla(16,RESULT,"lista ::= VAR"
 
 declaraciones::= DECLARE:beg_ d:d_ ENDDECLARE:end_ {:RESULT= ""+beg_+""+d_+""+end_;Regla regla = new Regla(18,RESULT,"declaraciones ::= DECLARE d ENDDECLARE");listaReglas.add(regla);:};
 
-
-//este fue modificado por correccion de recursivida de derecha, lo pasamos a izquierda.
 d::=  CORCHETE_APER:cor_a a:a_ CORCHETE_CIER:cor_c {:RESULT = ""+cor_a+""+a_+""+cor_c;Regla regla = new Regla(19,RESULT,"d ::= CORCHETE_APER a CORCHETE_CIER ");listaReglas.add(regla);:} 
-    | d:d_ CORCHETE_APER:cor_a a:a_ CORCHETE_CIER:cor_c {:RESULT = ""+cor_a+""+a_+""+cor_c+""+d_;Regla regla = new Regla(20,RESULT,"d ::= CORCHETE_APER a CORCHETE_CIER d ");listaReglas.add(regla);:};
+    | d:d_ CORCHETE_APER:cor_a a:a_ CORCHETE_CIER:cor_c  {:RESULT = ""+d_+""+cor_a+""+a_+""+cor_c;Regla regla = new Regla(20,RESULT,"d ::= d CORCHETE_APER a CORCHETE_CIER ");listaReglas.add(regla);:};
 
 a::= VAR:id_ COMA:com1_ a:a_ COMA:com2_ tipos_datos:tip_  {:RESULT = ""+id_+""+com1_+""+a_+""+com2_+""+tip_;Regla regla = new Regla(21,RESULT,"a ::= VAR COMA a COMA tipos_datos");listaReglas.add(regla);  Token token = new Token();token.setLexema((String) id_);token.setToken("VAR");token.setTipo((String)tip_);listaTokens.add(token);:}
     | VAR:id_ CORCHETE_CIER:cor_c ASIGNACION:asig_ CORCHETE_APER:cor_a tipos_datos:tip_{:RESULT = ""+id_+""+cor_c+""+asig_+""+cor_a+""+tip_;Regla regla = new Regla(22,RESULT,"a ::= VAR CORCHETE_CIER ASIGNACION CORCHETE_APER tipos_datos");listaReglas.add(regla); Token token = new Token();token.setLexema((String) id_);token.setToken("VAR");token.setTipo((String)tip_);token.setValor((String)asig_);listaTokens.add(token);:};
@@ -92,7 +90,8 @@ mostrar::= PRINT:p  CONST_STRING:cs  {:RESULT=""+p+""+cs;Regla regla = new Regla
 
 
 //DEFINICION ASIGNACION SIMPLE
-asignacion_simple ::= VAR:id_ ASIGNACION:asig_ expresion:exp_ {:RESULT = ""+id_+""+asig_+""+exp_;Regla regla = new Regla(27,RESULT,"asignacion_simple ::= VAR ASIGNACION expresion");listaReglas.add(regla);:};
+asignacion_simple ::= VAR:id_ ASIGNACION:asig_ expresion:exp_ {:RESULT = ""+id_+""+asig_+""+exp_;Regla regla = new Regla(27,RESULT,"asignacion_simple ::= VAR ASIGNACION expresion");listaReglas.add(regla);:} | VAR:id_ ASIGNACION:asig_ CONST_STRING:string {:RESULT = ""+id_+""+asig_+""+string;Regla regla = new Regla(80,RESULT,"asignacion_simple ::= VAR ASIGNACION CONST_STRING");listaReglas.add(regla);:};
+
 
 expresion ::=  expresion:exp_ OP_AR_SUM:sum_ termino:t_{:RESULT= ""+exp_+""+sum_+""+t_;Regla regla = new Regla(28,RESULT,"expresion ::= expresion OP_AR_SUM termino ");listaReglas.add(regla);:} 
              | expresion:exp_ OP_AR_RES:res_ termino:t_{:RESULT= ""+exp_+""+res_+""+t_;Regla regla = new Regla(29,RESULT,"expresion ::= expresion OP_AR_RES termino");listaReglas.add(regla);:} 

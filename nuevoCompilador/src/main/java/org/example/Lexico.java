@@ -989,6 +989,7 @@ public class Lexico implements java_cup.runtime.Scanner {
 			t.setLongitud(yytext().length());         	
 			listaToken.add(t);
 			}else{
+			  System.out.println(yytext());
               //JOptionPane.showMessageDialog(null,"","Longitud de string excedida",JOptionPane.PLAIN_MESSAGE);
               throw new Exception("No se puede continuar con el analiss (exceso de longitud en constante string)");
             }

@@ -5,31 +5,31 @@ diferente en su lenguaje, como operador de asignacion, apertura y cierre de
 ciclos y condicionales, operadores logicos, nombres de tipos, etc. />
 
 DECLARE
-[suma, contador, d1] := [FLOAT, INT, FLOAT]
-[actual, contar, palabra] := [FLOAT, FLOAT, STRING]
-[var] := [INT]
+[suma,contador,d1] := [FLOAT,INTEGER,FLOAT]
+[actual,contar,palabra] := [FLOAT,FLOAT,STRING]
+[var] := [INTEGER]
 ENDDECLARE
 
 
 BEGIN.PROGRAM
 
-PRINT  "Prueba.txt Analizador Lexico!"
+PRINT  "Prueba Analizador Lexico!"
 
-contador = 0
-suma = 7.5
-contar = 18.22
+contador:=0
+suma:=7.5
+contar:=18.22
 
-WHILE (contador <= 92) {
-	contador = contador + 1
-	actual = (contador / 0.342) + (contador * (contar + 4.67))
-	suma = suma + actual
+WHILE (contador)<=(92) DO{
+	contador:= contador + 1
+	actual:= (contador / 0.342) + (contador * (contar + 4.67))
+	suma:= suma + actual
 	}
-PRINT  "La variable suma es de tipo float"
+PRINT  "La variable suma es de"
 
 
-IF ((actual > 2) and (actual <> 0)){
-	PRINT  "actual es mayor que 2 y distinto de cero"
-	palabra = "es mayor"
+IF ((actual) > (2) )&& ((actual) != (0)) THEN{
+	PRINT  "actual es mayor que 2"
+	palabra:="es mayor"
 }
 ELSE{
 	PRINT "no es mayor que 2"
